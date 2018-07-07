@@ -1,4 +1,4 @@
-pragma solidity ^0.4.16;
+pragma solidity ^0.4.24;
 
 contract owned {
     address public owner;
@@ -49,6 +49,30 @@ contract eduDAO is owned, tokenRecipient {
     Member[] public members;
     uint256 DAObalance;
 
+    //GETTERS++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    function getDaoBalance() public view returns (uint256) {return DAObalance;}
+    
+    function getProposalDescription(uint proposalID) public view returns (string){
+        return proposals[proposalID].description;
+    }
+    function getProposalVotes(uint proposalID) public view returns (uint){
+        return proposals[proposalID].numberOfVotes;
+    }
+    function getProposalEduRequirements(uint proposalID) public view returns (string){
+        return proposals[proposalID].eduCourse;
+    }
+    function getProposalFunding(uint proposalID) public view returns (uint){
+        return proposals[proposalID].amount;
+    }
+    
+
+
+
+
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //EVENTS
+
     event ProposalAdded(uint proposalID, address recipient, uint amount, string description);
     event Voted(uint proposalID, bool position, address voter, string justification);
     event ProposalTallied(uint proposalID, int result, uint quorum, bool active);
@@ -56,17 +80,18 @@ contract eduDAO is owned, tokenRecipient {
     event ChangeOfRules(uint newMinimumQuorum, uint newDebatingPeriodInMinutes, int newMajorityMargin);
 
     modifier onlyMember {
-        require(memberId[msg.sender] != 0);
+        require(memberId[msg.sender] != 0 || msg.sender == owner);
         _;
     }
 
     struct Proposal {
-        address[] recipients;
-        uint[] amountPerson;
-        bool[] validated;
+        address[3] recipients;
+        uint[3] amountPerson;
+        bool[3] validated;
         uint amount;
         string description;
         string eduCourse;
+        
         bool eduSubmitted;
         uint minExecutionDate;
         bool executed;
@@ -106,19 +131,19 @@ contract eduDAO is owned, tokenRecipient {
     /**
      * Constructor function
      */
-    function Congress (
+    constructor (
         uint minimumQuorumForProposals,
         uint minutesForDebate,
         int marginOfVotesForMajority
-    )  payable public {
-
+    )   public {
+        //owner = msg.sender;
         minimumQuorum = minimumQuorumForProposals;
         debatingPeriodInMinutes = minutesForDebate;
         majorityMargin = marginOfVotesForMajority;
         // It’s necessary to add an empty first member
         addMember(0, "","");
         // and let's add the founder, to save a step later
-        addMember(owner, "founder",keccak256("founder"));
+        addMember(msg.sender, "founder", bytes32(0));//keccak256("founder"));
         DAObalance = 1000000; // ASSUME THAT DAO IS PREFUNDED WITH THIS AMOUNT OF MONEY
     }
 
@@ -130,9 +155,9 @@ contract eduDAO is owned, tokenRecipient {
      * @param targetMember ethereum address to be added
      * @param memberName public name for that member
      */
-    function addMember(address targetMember, string memberName, bytes32 nameValidHash) onlyMember public {
+    function addMember(address targetMember, string memberName, bytes32 nameValidHash)  public {
 
-        require(keccak256(memberName) == nameValidHash, "KYC process, name valid");
+        //require(keccak256(memberName) == nameValidHash, "KYC process, name valid");
         uint id = memberId[targetMember];
         if (id == 0) {
             memberId[targetMember] = members.length;
@@ -143,6 +168,7 @@ contract eduDAO is owned, tokenRecipient {
         tempMemb.memberSince = now;
         tempMemb.name = memberName;
         tempMemb.qiAmount = 0;
+        members[id] = tempMemb;
         emit MembershipChanged(targetMember, true);
     }
 
@@ -168,17 +194,15 @@ contract eduDAO is owned, tokenRecipient {
      *
      * Propose to send `weiAmount / 1e18` ether to `beneficiary` for `jobDescription`. `transactionBytecode ? Contains : Does not contain` code.
      *
-     * @param beneficiary who to send the ether to
      * @param weiAmount amount of ether to send, in wei
      * @param jobDescription Description of job
-     * @param transactionBytecode bytecode of transaction
      */
     function newProposal(
-        address[] beneficiaries,
+        address[3] beneficiaries,
         uint weiAmount,
         string jobDescription,
         string educourse,
-        uint[] amountPerPerson
+        uint[3] amountPerPerson
     )
         onlyMembers public
         returns (uint proposalID)
@@ -186,16 +210,15 @@ contract eduDAO is owned, tokenRecipient {
         
         uint calc = 0;
 
-        for (uint256 k = 0 ; k < amountPerPerson.length ; i++){
-            require(amountPerPerson[i] > 0);
-            calc += amountPerPerson[i];
+        for (uint256 k = 0 ; k < amountPerPerson.length ; k++){
+            require(amountPerPerson[k] >= 0);
+            calc += amountPerPerson[k];
         }
 
         require(calc == weiAmount);
 
 
         proposalID = proposals.length++;
-
         Proposal storage p = proposals[proposalID];
         p.recipients = beneficiaries;
         p.amountPerson = amountPerPerson;
@@ -207,7 +230,7 @@ contract eduDAO is owned, tokenRecipient {
         p.executed = false;
         p.proposalPassed = false;
         p.numberOfVotes = 0;
-
+        //proposals[proposalID] = p;
         for (uint8 i = 0; i < beneficiaries.length; ++i){
             emit ProposalAdded(proposalID, beneficiaries[i], weiAmount, jobDescription);
         }
@@ -226,8 +249,7 @@ contract eduDAO is owned, tokenRecipient {
                 p.validated[i] = true;
             }
         }
-
-        //TODOOOOOOO: EMIT EVENT TO JOIN PROPOSAL
+        //TODOOOOOOOOOOO: EMIT EVENT TO JOIN PROPOSAL
     }
 
     function submitEducationProof(string educourse, uint proposalID) public {
@@ -241,21 +263,17 @@ contract eduDAO is owned, tokenRecipient {
      * Check if a proposal code matches
      *
      * @param proposalNumber ID number of the proposal to query
-     * @param beneficiary who to send the ether to
      * @param weiAmount amount of ether to send
-     * @param transactionBytecode bytecode of transaction
      */
     function checkProposalCode(
         uint proposalNumber,
         address[] beneficiaries,
-        uint weiAmount,
-        bytes transactionBytecode
-    )
+        uint weiAmount    )
         view public
         returns (bool codeChecksOut)
     {
         Proposal storage p = proposals[proposalNumber];
-        return p.proposalHash == keccak256(beneficiaries[0], weiAmount, transactionBytecode);
+        return p.proposalHash == keccak256(beneficiaries[0], weiAmount);
     }
 
     /**
@@ -296,7 +314,6 @@ contract eduDAO is owned, tokenRecipient {
      * Count the votes proposal #`proposalNumber` and execute it if approved
      *
      * @param proposalNumber proposal number
-     * @param transactionBytecode optional: if the transaction contained a bytecode, you need to send it
      */
     function executeProposal(uint proposalNumber) public {
         Proposal storage p = proposals[proposalNumber];
@@ -334,4 +351,5 @@ contract eduDAO is owned, tokenRecipient {
 
         emit receivedDonation(msg.sender, msg.value, "We have received a donation"); 
     }
+    
 }
