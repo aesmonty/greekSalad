@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Card, Col, Row, Divider } from 'antd';
+// import axios from 'axios';
 import { EthereumIcon } from '../Web3/EthereumIcon';
 import { HomeMiddleBanner } from './HomeMiddleBanner';
 
 class Home extends Component {
-  constructor(props) {
-    super(props);
+  componentDidUpdate(prevProps) {
+    if (this.props.id !== prevProps.id) {
+      console.log(`make a GET to the API sending id: ${this.props.id}`);
+    }
   }
 
   render() {
@@ -51,6 +55,10 @@ class Home extends Component {
     );
   }
 }
+
+Home.propTypes = {
+  id: PropTypes.string
+};
 
 // EXPORT COMPONENT
 

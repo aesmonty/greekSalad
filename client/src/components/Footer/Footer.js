@@ -1,7 +1,5 @@
 import React from 'react';
 
 export const Footer = () => (
-  <footer>
-    <div className="w-100" />
-  </footer>
+  <footer style={{ backgroundColor: 'rgb(198, 204, 227)', borderTop: '1px solid #1d3557' }} />
 );

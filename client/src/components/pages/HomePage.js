@@ -13,8 +13,8 @@ class HomePage extends Component {
     return (
       <div>
         <div
-          className="banner jumbotron jumbotron-fluid light-blue-top animated bottom-dark-border"
-          style={{ marginBottom: 0 }}
+          className="jumbotron jumbotron-fluid light-blue-top animated bottom-dark-border"
+          style={{ marginBottom: 0, backgroundColor: '#c6cce3' }}
         >
           <div className="text-center">
             <h1 className="title-text text-shadow-simple">Welcome {this.props.accounts[0]}!!!!!</h1>
@@ -23,7 +23,7 @@ class HomePage extends Component {
             <h2 className="dark-blue-text text-shadow-simple">Ethereum powered DAPP</h2>
           </div>
         </div>
-        <Home />
+        <Home id={this.props.accounts[0]} />
       </div>
     );
   }
@@ -33,13 +33,10 @@ HomePage.propTypes = {
   accounts: PropTypes.array
 };
 
-// export { HomePage };
-
 const mapStateToProps = state => {
-  const { accounts, accounts_fetched, account_selected } = state.accounts;
-  const { network_fetched, network_id } = state.network;
+  const { accounts } = state.accounts;
 
-  return { accounts, accounts_fetched, account_selected, network_fetched, network_id };
+  return { accounts };
 };
 
 const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);
