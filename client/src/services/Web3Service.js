@@ -17,7 +17,6 @@ export const fetchNetwork = () => {
 export const fetchAccounts = () => {
   return new Promise(resolve => {
     const ethAccounts = getAccounts();
-    console.log(`wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww, ${ethAccounts}`);
     resolve(ethAccounts);
   });
 };
