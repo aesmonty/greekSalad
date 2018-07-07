@@ -18,11 +18,11 @@ import { Web3Provider } from './Web3/Web3Provider';
 
 export const App = () => (
   <Provider store={createAppStore()}>
-    <div className="container">
+    <div className="container" style={{ paddingBottom: 0 }}>
       <Web3Provider />
       <Menu />
       <AppRouter />
-      <Footer/>
+      <Footer />
     </div>
   </Provider>
 );

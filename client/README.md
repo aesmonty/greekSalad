@@ -1,6 +1,6 @@
-# Shark of The Pool Web Application
+# Web Application
 
-This is a web application for Shark of The Pool Decentralized application.
+This is a web application for Decentralized application.
 
 It's made using React and Redux. User is required to have MetaMask extension.
 

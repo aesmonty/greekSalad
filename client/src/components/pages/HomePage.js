@@ -12,7 +12,10 @@ class HomePage extends Component {
   render() {
     return (
       <div>
-        <div className="banner jumbotron jumbotron-fluid light-blue-top animated bottom-dark-border">
+        <div
+          className="banner jumbotron jumbotron-fluid light-blue-top animated bottom-dark-border"
+          style={{ marginBottom: 0 }}
+        >
           <div className="text-center">
             <h1 className="title-text text-shadow-simple">Welcome {this.props.accounts[0]}!!!!!</h1>
           </div>

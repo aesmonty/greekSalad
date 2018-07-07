@@ -7,11 +7,13 @@ import React from 'react';
 const FaqPage = () => (
   <div>
     <div className="banner jumbotron jumbotron-fluid light-blue-top animated bottom-dark-border">
-      <div className="text-center"><h1 className="title-text text-shadow-simple">FAQ</h1></div>
+      <div className="text-center">
+        <h1 className="title-text text-shadow-simple">FAQ</h1>
+      </div>
     </div>
     <div>
-      <h2 className="dark-blue-text">What is Shark of The Pool?</h2>
-      <p className="text-muted"></p>
+      <h2 className="dark-blue-text">What is Dapp?</h2>
+      <p className="text-muted" />
     </div>
   </div>
 );
