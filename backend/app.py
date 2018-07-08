@@ -1,10 +1,14 @@
 from flask import Flask, jsonify
 from data import *
-from time import sleep
+from Compact_Contract import Compact_Contract
+from bc_admin import Blockchain_admin
 
 app = Flask(__name__)
 
 scanned = False
+
+ba = Blockchain_admin(True)
+
 
 @app.route('/')
 def hello_world():
@@ -13,6 +17,12 @@ def hello_world():
 
 @app.route('/proposals')
 def get_proposals():
+    global ba
+    cc = Compact_Contract('abi.json', 'eduDAO', ba.getWeb3(), '0x6bbE90c1b32857590Df28E5645fe7B5A9c31c050')
+    for proposal in proposals:
+        val = cc.get_def_instance().getProposalVotes(proposal['id'])
+        print(val)
+        proposal['voted'] = (val != 0)
     return jsonify(proposals)
 
 
