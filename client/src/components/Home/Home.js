@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Card, Col, Row, Divider, List, Icon } from 'antd';
+import { Card, Col, Row, Divider, List, Icon, Progress, Tooltip } from 'antd';
 import axios from 'axios';
 import { EthereumIcon } from '../Web3/EthereumIcon';
 import { HomeMiddleBanner } from './HomeMiddleBanner';
+import { Vote } from '../../services/VoteService';
 
 class Home extends Component {
   constructor(props) {
@@ -38,7 +39,7 @@ class Home extends Component {
     }
   }
   handleVoteClick(id) {
-    console.log(`use web3 with the id of ${id} and setState accordingly`);
+    Vote(id);
   }
   handleInvitationsClick(id) {
     let newInvitations = this.state.invitations;
@@ -125,7 +126,15 @@ class Home extends Component {
           <Row gutter={16}>
             <Col span={12}>
               <Card title="Your loans" bordered={false}>
-                Card content
+                <Tooltip title="Proposal under evaluation">
+                  <span>Bee keeping - Botswana</span>
+                  <Progress percent={0} />
+                </Tooltip>
+                <Divider />
+                <Tooltip title="Proof of education to be submitted">
+                  <span>Phishing</span>
+                  <Progress percent={50} />
+                </Tooltip>
               </Card>
             </Col>
             <Col span={12}>
