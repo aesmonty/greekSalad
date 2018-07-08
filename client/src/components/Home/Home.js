@@ -15,6 +15,7 @@ class Home extends Component {
         { name: 'learn AGR-101 and start a wheat farm', checked: false, id: 0 },
         { name: 'Expand our fishing business with the advanced fishing course', checked: false, id: 1 }
       ],
+      teaching: [{ title: 'Trade in your local village 101', name: 'Ekua G', checked: false, id: 0 }],
       certificates: ['AGR-100', 'PHI-203']
     };
     this.handleVoteClick = this.handleVoteClick.bind(this);
@@ -45,6 +46,11 @@ class Home extends Component {
     let newInvitations = this.state.invitations;
     newInvitations[id].checked = true;
     this.setState({ invitations: newInvitations });
+  }
+  handleTeachingClick(id) {
+    let newTeaching = this.state.teaching;
+    newTeaching[id].checked = true;
+    this.setState({ teaching: newTeaching });
   }
   render() {
     return (
@@ -112,6 +118,28 @@ class Home extends Component {
                                   type="check-square-o"
                                 />
                               )}
+                            </span>
+                          </div>
+                        }
+                      />
+                    </List.Item>
+                  )}
+                />
+              </Card>
+              <Card title="Teaching requests" bordered={false}>
+                <List
+                  itemLayout="horizontal"
+                  dataSource={this.state.teaching}
+                  renderItem={item => (
+                    <List.Item>
+                      <List.Item.Meta
+                        title={<a>{item.title}</a>}
+                        description={
+                          <div>
+                            <span style={{ width: '500px', float: 'left' }}>{item.name}</span>
+                            <span style={{ marginRight: 10, float: 'right' }}>
+                              <Icon style={{ color: '#586aad' }} type="message" />
+                              <Icon style={{ color: '#586aad', marginLeft: 10 }} type="phone" />
                             </span>
                           </div>
                         }
