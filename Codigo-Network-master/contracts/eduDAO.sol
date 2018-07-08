@@ -12,8 +12,6 @@ contract owned {
         _;
     }
 
-   
-
     function transferOwnership(address newOwner) onlyOwner  public {
         owner = newOwner;
     }
@@ -56,6 +54,18 @@ contract eduDAO is owned, tokenRecipient {
     function getProposalDescription(uint proposalID) public view returns (string){
         return proposals[proposalID].description;
     }
+
+    function getProposalTitle(uint proposalID) public view returns (string){
+        return proposals[proposalID].title;
+    }    
+
+    function getNumberProposals() public view returns(uint){
+        return proposals.length;
+    }
+    function getNumberOfMembers() public view returns(uint){
+        return members.length;
+    }
+
     function getProposalVotes(uint proposalID) public view returns (uint){
         return proposals[proposalID].numberOfVotes;
     }
@@ -89,13 +99,16 @@ contract eduDAO is owned, tokenRecipient {
         uint[3] amountPerson;
         bool[3] validated;
         uint amount;
+        string title;
         string description;
         string eduCourse;
         
         bool eduSubmitted;
         uint minExecutionDate;
-        bool executed;
-        bool proposalPassed;
+        bool executed_1st_round;
+        bool executed_2nd_round;
+        bool proposalPassed_1st_round;
+        bool proposalPassed_2nd_round;
         uint numberOfVotes;
         int currentResult;
         bytes32 proposalHash;
@@ -113,7 +126,7 @@ contract eduDAO is owned, tokenRecipient {
 
     struct Cert {
         string name;
-        bytes32 certhash;
+        bytes32 certificate;
     }
 
     struct Vote {
@@ -201,6 +214,7 @@ contract eduDAO is owned, tokenRecipient {
         address[3] beneficiaries,
         uint weiAmount,
         string jobDescription,
+        string jobTitle,
         string educourse,
         uint[3] amountPerPerson
     )
@@ -225,14 +239,17 @@ contract eduDAO is owned, tokenRecipient {
         p.amount = weiAmount;
         p.eduCourse = educourse;
         p.description = jobDescription;
+        p.title = jobTitle;
         p.proposalHash = keccak256(beneficiaries[0], weiAmount);
         p.minExecutionDate = now + debatingPeriodInMinutes * 1 minutes;
-        p.executed = false;
-        p.proposalPassed = false;
+        p.executed_1st_round = false;
+        p.executed_2nd_round = false;
+        p.proposalPassed_1st_round = false;
+        p.proposalPassed_2nd_round = false;
         p.numberOfVotes = 0;
         //proposals[proposalID] = p;
         for (uint8 i = 0; i < beneficiaries.length; ++i){
-            emit ProposalAdded(proposalID, beneficiaries[i], weiAmount, jobDescription);
+            emit ProposalAdded(proposalID, beneficiaries[i], weiAmount, jobTitle);
         }
         numProposals = proposalID+1;
 
@@ -250,13 +267,6 @@ contract eduDAO is owned, tokenRecipient {
             }
         }
         //TODOOOOOOOOOOO: EMIT EVENT TO JOIN PROPOSAL
-    }
-
-    function submitEducationProof(string educourse, uint proposalID) public {
-
-        Proposal storage p = proposals[proposalID];
-        p.eduSubmitted = (keccak256(p.eduCourse) == keccak256(educourse));
-
     }
 
     /**
@@ -308,48 +318,63 @@ contract eduDAO is owned, tokenRecipient {
         return p.numberOfVotes;
     }
 
-    /**
-     * Finish vote
-     *
-     * Count the votes proposal #`proposalNumber` and execute it if approved
-     *
-     * @param proposalNumber proposal number
-     */
-    function executeProposal(uint proposalNumber) public {
-        Proposal storage p = proposals[proposalNumber];
+    function submitEducationProof(string educourse, uint proposalID) public {
+        Proposal storage p = proposals[proposalID];
+        p.eduSubmitted = (keccak256(p.eduCourse) == keccak256(educourse));
+    }
 
+    function execute_1st_installment(uint proposalNumber) public {
+        Proposal storage p = proposals[proposalNumber];
         require(now > p.minExecutionDate); 
         require(p.numberOfVotes >= minimumQuorum);                                
-        require(!p.executed && p.proposalHash == keccak256(p.recipients[0], p.amount));
+        require(!p.executed_1st_round && p.proposalHash == keccak256(p.recipients[0], p.amount));
         // ...then execute result
 
         if (p.currentResult > majorityMargin) {
             // Proposal passed; execute the transaction
-
-            p.executed = true; // Avoid recursive calling
-
+            p.executed_1st_round = true; // Avoid recursive calling
             for (uint i = 0; i < p.recipients.length; i++){
-
-                p.recipients[i].transfer(p.amountPerson[i]);
-
+                uint256 div = p.amountPerson[i] / 2;
+                p.recipients[i].transfer(div); // TODO: CRITICAL REENTRANCY ATTACK POSSIBLE
             }
-
-            p.proposalPassed = true;
+            p.proposalPassed_1st_round = true;
         } else {
             // Proposal failed
-            p.proposalPassed = false;
+            p.proposalPassed_1st_round = false;
         }
-
         // Fire Events
         emit ProposalTallied(proposalNumber, p.currentResult, p.numberOfVotes, p.proposalPassed);
     }
 
-    event receivedDonation(address sender, uint amount, string donation);
 
+    function execute_2st_installment(uint proposalNumber) public {
+        Proposal storage p = proposals[proposalNumber];
+        require(now > p.minExecutionDate); 
+        require(p.numberOfVotes >= minimumQuorum);                                
+        require(p.executed_1st_round);
+        require(p.eduSubmitted);
+        
+        // ...then execute result
 
-    function () payable public {  //This is like the donation function
-
-        emit receivedDonation(msg.sender, msg.value, "We have received a donation"); 
+        if (p.currentResult > majorityMargin) {
+            // Proposal passed; execute the transaction
+            p.executed_1st_round = true; // Avoid recursive calling
+            for (uint i = 0; i < p.recipients.length; i++){
+                uint256 div = p.amountPerson[i] / 2;
+                uint256 q = p.amountPerson[i] % 2;
+                uint amount = p.amountPerson[i] - div + q;
+                p.recipients[i].transfer(amount); // TODO: CRITICAL REENTRANCY ATTACK POSSIBLE
+            }
+            p.proposalPassed_2nd_round = true;
+        } else {
+            // Proposal failed
+            p.proposalPassed_2nd_round = false;
+        }
+        // Fire Events
+        emit ProposalTallied(proposalNumber, p.currentResult, p.numberOfVotes, p.proposalPassed);
     }
-    
+
+
+
+
 }

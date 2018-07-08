@@ -8,8 +8,8 @@ blockchain_admin = Blockchain_admin(local=True)
 m_web3 = blockchain_admin.getWeb3()
 
 # Deploy Contract
-cc = Contract('contracts/eduDAO.sol','eduDAO', m_web3, verbose=True)
-cc.publish(blockchain_admin.get_account(0),10,3,3)
+cc = Contract('contracts/eduDAO.sol','eduDAO', m_web3, verbose=False)
+cc.publish(blockchain_admin.get_account(0),10,3,1)
 cc.get_consice_instance().addMember(blockchain_admin.get_account(1),"andres",u.hash("andres"))
 
 '''
@@ -24,18 +24,26 @@ cc.get_consice_instance().addMember(blockchain_admin.get_account(1),"andres",u.h
 
 val = cc.get_def_instance().functions.newProposal([blockchain_admin.get_account(1),
                                       blockchain_admin.get_account(0),
-                                      blockchain_admin.get_account(0)],10,
-                                      "This is an amazing project","BDL",
+                                      blockchain_admin.get_account(0)],
+                                      10,
+                                      "This is an amazing project",
+                                      "Don Aggelos",
+                                      "BDL",
                                       [10,0,0]).transact()
 print(val)
-'''
-    function vote(
-        uint proposalNumber,
-        bool supportsProposal,
-        string justificationText
-    )
-'''
-vote = cc.get_def_instance().functions.vote(0,True,"I love this shit").call()
+
+vote = cc.get_def_instance().functions.vote(0,True,"I love this shit").transact()
 var = cc.get_def_instance().functions.getProposalDescription(0).call()
 
-print(var)
+getVote = cc.get_def_instance().functions.getProposalVotes(0).call()
+
+def getProposals():
+    noProposals = cc.get_def_instance().functions.getNumberProposals().call()
+    print(noProposals)
+    for i in range (0,noProposals):
+        title = cc.get_def_instance().functions.getProposalTitle(i).call()
+        print("Contract title {}".format(title))
+
+getProposals()
+print(getVote)
+
