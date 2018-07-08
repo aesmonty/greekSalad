@@ -11,9 +11,10 @@ class Home extends Component {
     this.state = {
       proposals: [],
       invitations: [
-        { name: 'learn ARG-101 and start a wheat farm', checked: false, id: 0 },
+        { name: 'learn AGR-101 and start a wheat farm', checked: false, id: 0 },
         { name: 'Expand our fishing business with the advanced fishing course', checked: false, id: 1 }
-      ]
+      ],
+      certificates: ['AGR-100', 'PHI-203']
     };
     this.handleVoteClick = this.handleVoteClick.bind(this);
     this.handleInvitationsClick = this.handleInvitationsClick.bind(this);
@@ -40,9 +41,7 @@ class Home extends Component {
     console.log(`use web3 with the id of ${id} and setState accordingly`);
   }
   handleInvitationsClick(id) {
-    console.log(id);
     let newInvitations = this.state.invitations;
-    console.log(newInvitations);
     newInvitations[id].checked = true;
     this.setState({ invitations: newInvitations });
   }
@@ -131,7 +130,15 @@ class Home extends Component {
             </Col>
             <Col span={12}>
               <Card title="Your certificates" bordered={false}>
-                Card content
+                <List
+                  itemLayout="horizontal"
+                  dataSource={this.state.certificates}
+                  renderItem={item => (
+                    <List.Item>
+                      <List.Item.Meta title={<a>{item}</a>} />
+                    </List.Item>
+                  )}
+                />
               </Card>
             </Col>
           </Row>
