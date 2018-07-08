@@ -6,9 +6,19 @@ import { EthereumIcon } from '../Web3/EthereumIcon';
 import { HomeMiddleBanner } from './HomeMiddleBanner';
 
 class Home extends Component {
-  state = {
-    proposals: []
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      proposals: [],
+      invitations: [
+        { name: 'learn ARG-101 and start a wheat farm', checked: false, id: 0 },
+        { name: 'Expand our fishing business with the advanced fishing course', checked: false, id: 1 }
+      ]
+    };
+    this.handleVoteClick = this.handleVoteClick.bind(this);
+    this.handleInvitationsClick = this.handleInvitationsClick.bind(this);
+  }
+
   componentDidUpdate(prevProps) {
     let self = this;
     if (this.props.id !== prevProps.id) {
@@ -28,6 +38,13 @@ class Home extends Component {
   }
   handleVoteClick(id) {
     console.log(`use web3 with the id of ${id} and setState accordingly`);
+  }
+  handleInvitationsClick(id) {
+    console.log(id);
+    let newInvitations = this.state.invitations;
+    console.log(newInvitations);
+    newInvitations[id].checked = true;
+    this.setState({ invitations: newInvitations });
   }
   render() {
     return (
@@ -76,7 +93,32 @@ class Home extends Component {
             </Col>
             <Col span={12}>
               <Card title="Invitations" bordered={false}>
-                Card content
+                <List
+                  itemLayout="horizontal"
+                  dataSource={this.state.invitations}
+                  renderItem={item => (
+                    <List.Item>
+                      <List.Item.Meta
+                        description={
+                          <div>
+                            <span style={{ width: '500px', float: 'left' }}>{item.name}</span>
+                            <span style={{ marginRight: 10, float: 'right' }}>
+                              {item.checked === true ? (
+                                <Icon style={{ color: 'white', backgroundColor: 'green' }} type="check-square-o" />
+                              ) : (
+                                <Icon
+                                  data-id={item.id}
+                                  onClick={this.handleInvitationsClick.bind(null, item.id)}
+                                  type="check-square-o"
+                                />
+                              )}
+                            </span>
+                          </div>
+                        }
+                      />
+                    </List.Item>
+                  )}
+                />
               </Card>
             </Col>
           </Row>
