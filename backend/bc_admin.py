@@ -8,9 +8,12 @@ Class @Blockchain_admin
         - chain_ip: If not local, then provide IP of the blockchain node (including port)
         - Online_Acc_Addr: If not local, then provide the pk of the node interacting with bc
         - Online_Acc_Pwd: if not local, then provide the pwd to unlock the node interacting with bc
+
 ============== Methods ==============
     @get_account(self,id) returns the Eth acc used in the constructor
+
     @getWeb3(self): returns an instance of web3
+
     @__unlock_account(self,duration) Private: Unlocks an Eth account for 10000ms
 '''
 class Blockchain_admin:
@@ -20,7 +23,7 @@ class Blockchain_admin:
         if local:
             self.m_web3 = Web3(HTTPProvider('http://localhost:8545'))
         else:
-            if chain_ip == None :# or Online_Acc_Addr == None or Online_Acc_Addr == None:
+            if chain_ip == None or Online_Acc_Addr == None or Online_Acc_Addr == None:
                 raise ValueError("One of the variables passed to the constructor is None")
             self.m_web3 = Web3(HTTPProvider(chain_ip))
             self.Online_Acc_Addr  = Online_Acc_Addr
@@ -42,13 +45,7 @@ class Blockchain_admin:
     def getWeb3(self):
         return self.m_web3
 
-    def __unlock_account(self, duration=10000):
-        self.m_web3.personal.unlockAccount(self.Online_Acc_Addr, self.Online_Acc_Pwd, duration)
+    def __unlock_account(self,duration=10000):
+        self.m_web3.personal.unlockAccount(self.Online_Acc_Addr,self.Online_Acc_Pwd,duration)
 
 
-bc = Blockchain_admin(False,
-                      "http://35.206.132.245:8545",
-                      "0xa35e2E15c6c74CE3e4dCBcd4c6943BA56deAa808",
-                      "123456")
-
-print(bc.getWeb3().eth.getBalance(bc.get_account(0)))
