@@ -73,12 +73,12 @@ class Home extends Component {
         reject('No web3!');
       }
 
-      const appContract = web3.eth.contract(appContractAbi).at('0x7F5c612d69b2F26236Bb7E473FD6DAC096380a8f');
+      const appContract = web3.eth.contract(appContractAbi).at('0x6bbE90c1b32857590Df28E5645fe7B5A9c31c050');
       const account = web3.eth.accounts[0];
       if (!account) {
         reject('No account!');
       }
-      appContract.vote.sendTransaction(id, true, 'reason', { from: account }, function(err, res) {
+      appContract.vote.sendTransaction(id, true, 'reason', { from: account, gasLimit: 400000 }, function(err, res) {
         if (err) {
           console.error(err);
         } else {
@@ -224,6 +224,7 @@ class Home extends Component {
                   dataSource={this.state.certificates}
                   renderItem={item => (
                     <List.Item>
+                      <Icon style={{ float: 'left', marginRight: 10 }} type="book" />
                       <List.Item.Meta title={<a>{item}</a>} />
                     </List.Item>
                   )}
