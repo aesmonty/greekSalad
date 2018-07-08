@@ -8,9 +8,6 @@ import { Web3Provider } from '../Web3/Web3Provider';
 
 export const Header = () => (
   <nav className="navbar navbar-expand-lg navbar-light alert-dark">
-    <a className="navbar-brand" href="/">
-      <img className="logo-image" src={require('../../images/logo.svg')} />
-    </a>
     <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#menu">
       <span className="navbar-toggler-icon" />
     </button>
