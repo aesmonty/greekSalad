@@ -106,10 +106,12 @@ class MembersPage extends Component {
       <div>
         <div
           className="jumbotron jumbotron-fluid light-blue-top animated bottom-dark-border"
-          style={{ marginBottom: 0, backgroundColor: '#c6cce3' }}
+          style={{ marginBottom: 0, backgroundColor: '#5ec776' }}
         >
           <div className="text-center">
-            <h1 className="title-text text-shadow-simple">Members page</h1>
+            <h3 className="title-text text-shadow-simple" style={{ marginBottom: 0, color: 'white' }}>
+              Members page
+            </h3>
           </div>
         </div>
         <div style={{ padding: 30 }}>

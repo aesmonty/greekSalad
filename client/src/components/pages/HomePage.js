@@ -14,13 +14,13 @@ class HomePage extends Component {
       <div>
         <div
           className="jumbotron jumbotron-fluid light-blue-top animated bottom-dark-border"
-          style={{ marginBottom: 0, backgroundColor: '#c6cce3' }}
+          style={{ marginBottom: 0, backgroundColor: '#5ec776' }}
         >
           <div className="text-center">
-            <h3 className="title-text text-shadow-simple" style={{ marginBottom: 0 }}>
+            <h3 className="title-text text-shadow-simple" style={{ marginBottom: 0, color: 'white' }}>
               Welcome to your Global Village!
             </h3>
-            <div>{this.props.accounts[0]}</div>
+            <div style={{ color: 'white' }}>{this.props.accounts[0]}</div>
           </div>
         </div>
         <Home id={this.props.accounts[0]} />
