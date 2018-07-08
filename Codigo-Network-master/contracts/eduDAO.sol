@@ -12,6 +12,8 @@ contract owned {
         _;
     }
 
+   
+
     function transferOwnership(address newOwner) onlyOwner  public {
         owner = newOwner;
     }
@@ -47,24 +49,15 @@ contract eduDAO is owned, tokenRecipient {
     Member[] public members;
     uint256 DAObalance;
 
-    //GETTERS++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
     function getDaoBalance() public view returns (uint256) {return DAObalance;}
-    
     function getProposalDescription(uint proposalID) public view returns (string){
+                
+        //Proposal memory p = ;
         return proposals[proposalID].description;
+
     }
 
-    function getProposalTitle(uint proposalID) public view returns (string){
-        return proposals[proposalID].title;
-    }    
-
-    function getNumberProposals() public view returns(uint){
-        return proposals.length;
-    }
-    function getNumberOfMembers() public view returns(uint){
-        return members.length;
-    }
+    //GETTERS++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     function getProposalVotes(uint proposalID) public view returns (uint){
         return proposals[proposalID].numberOfVotes;
@@ -75,17 +68,11 @@ contract eduDAO is owned, tokenRecipient {
     function getProposalFunding(uint proposalID) public view returns (uint){
         return proposals[proposalID].amount;
     }
-    
-
-
-
-
-    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    //EVENTS
 
     event ProposalAdded(uint proposalID, address recipient, uint amount, string description);
     event Voted(uint proposalID, bool position, address voter, string justification);
-    event ProposalTallied(uint proposalID, int result, uint quorum, bool active);
+    event ProposalPassed(uint proposalID, int result, uint quorum, bool active);
+    event ProposalExecuted(uint proposalID, int result, uint quorum, bool active);
     event MembershipChanged(address member, bool isMember);
     event ChangeOfRules(uint newMinimumQuorum, uint newDebatingPeriodInMinutes, int newMajorityMargin);
 
@@ -99,16 +86,13 @@ contract eduDAO is owned, tokenRecipient {
         uint[3] amountPerson;
         bool[3] validated;
         uint amount;
-        string title;
         string description;
         string eduCourse;
         
         bool eduSubmitted;
         uint minExecutionDate;
-        bool executed_1st_round;
-        bool executed_2nd_round;
-        bool proposalPassed_1st_round;
-        bool proposalPassed_2nd_round;
+        bool executed;
+        bool proposalPassed;
         uint numberOfVotes;
         int currentResult;
         bytes32 proposalHash;
@@ -126,7 +110,7 @@ contract eduDAO is owned, tokenRecipient {
 
     struct Cert {
         string name;
-        bytes32 certificate;
+        bytes32 certhash;
     }
 
     struct Vote {
@@ -214,7 +198,6 @@ contract eduDAO is owned, tokenRecipient {
         address[3] beneficiaries,
         uint weiAmount,
         string jobDescription,
-        string jobTitle,
         string educourse,
         uint[3] amountPerPerson
     )
@@ -239,17 +222,14 @@ contract eduDAO is owned, tokenRecipient {
         p.amount = weiAmount;
         p.eduCourse = educourse;
         p.description = jobDescription;
-        p.title = jobTitle;
         p.proposalHash = keccak256(beneficiaries[0], weiAmount);
         p.minExecutionDate = now + debatingPeriodInMinutes * 1 minutes;
-        p.executed_1st_round = false;
-        p.executed_2nd_round = false;
-        p.proposalPassed_1st_round = false;
-        p.proposalPassed_2nd_round = false;
+        p.executed = false;
+        p.proposalPassed = false;
         p.numberOfVotes = 0;
         //proposals[proposalID] = p;
         for (uint8 i = 0; i < beneficiaries.length; ++i){
-            emit ProposalAdded(proposalID, beneficiaries[i], weiAmount, jobTitle);
+            emit ProposalAdded(proposalID, beneficiaries[i], weiAmount, jobDescription);
         }
         numProposals = proposalID+1;
 
@@ -266,7 +246,14 @@ contract eduDAO is owned, tokenRecipient {
                 p.validated[i] = true;
             }
         }
-        //TODOOOOOOOOOOO: EMIT EVENT TO JOIN PROPOSAL
+        //TODOOOOOOO: EMIT EVENT TO JOIN PROPOSAL
+    }
+
+    function submitEducationProof(string educourse, uint proposalID) public {
+
+        Proposal storage p = proposals[proposalID];
+        p.eduSubmitted = (keccak256(p.eduCourse) == keccak256(educourse));
+
     }
 
     /**
@@ -314,67 +301,54 @@ contract eduDAO is owned, tokenRecipient {
         }
 
         // Create a log of this event
-        emit Voted(proposalNumber,  supportsProposal, msg.sender, justificationText);
         return p.numberOfVotes;
     }
 
-    function submitEducationProof(string educourse, uint proposalID) public {
-        Proposal storage p = proposals[proposalID];
-        p.eduSubmitted = (keccak256(p.eduCourse) == keccak256(educourse));
-    }
-
+    /**
+     * Finish vote
+     *
+     * Count the votes proposal #`proposalNumber` and execute it if approved
+     *
+     * @param proposalNumber proposal number
+     */
+  
+    
     function execute_1st_installment(uint proposalNumber) public {
         Proposal storage p = proposals[proposalNumber];
         require(now > p.minExecutionDate); 
         require(p.numberOfVotes >= minimumQuorum);                                
-        require(!p.executed_1st_round && p.proposalHash == keccak256(p.recipients[0], p.amount));
+        require(!p.proposalPassed);
+        require(!p.executed);
         // ...then execute result
 
         if (p.currentResult > majorityMargin) {
             // Proposal passed; execute the transaction
-            p.executed_1st_round = true; // Avoid recursive calling
+            p.proposalPassed = true; // Avoid recursive calling
             for (uint i = 0; i < p.recipients.length; i++){
                 uint256 div = p.amountPerson[i] / 2;
                 p.recipients[i].transfer(div); // TODO: CRITICAL REENTRANCY ATTACK POSSIBLE
             }
-            p.proposalPassed_1st_round = true;
-        } else {
-            // Proposal failed
-            p.proposalPassed_1st_round = false;
         }
-        // Fire Events
-        emit ProposalTallied(proposalNumber, p.currentResult, p.numberOfVotes, p.proposalPassed);
+            
     }
 
 
-    function execute_2st_installment(uint proposalNumber) public {
+    function execute_2nd_installment(uint proposalNumber) public {
         Proposal storage p = proposals[proposalNumber];
         require(now > p.minExecutionDate); 
         require(p.numberOfVotes >= minimumQuorum);                                
-        require(p.executed_1st_round);
+        require(p.executed);
         require(p.eduSubmitted);
         
         // ...then execute result
 
         if (p.currentResult > majorityMargin) {
             // Proposal passed; execute the transaction
-            p.executed_1st_round = true; // Avoid recursive calling
+            p.executed = true; // Avoid recursive calling
             for (uint i = 0; i < p.recipients.length; i++){
-                uint256 div = p.amountPerson[i] / 2;
-                uint256 q = p.amountPerson[i] % 2;
-                uint amount = p.amountPerson[i] - div + q;
+                uint amount = p.amountPerson[i]/2 +  p.amountPerson[i] % 2;
                 p.recipients[i].transfer(amount); // TODO: CRITICAL REENTRANCY ATTACK POSSIBLE
             }
-            p.proposalPassed_2nd_round = true;
-        } else {
-            // Proposal failed
-            p.proposalPassed_2nd_round = false;
         }
-        // Fire Events
-        emit ProposalTallied(proposalNumber, p.currentResult, p.numberOfVotes, p.proposalPassed);
     }
-
-
-
-
 }
