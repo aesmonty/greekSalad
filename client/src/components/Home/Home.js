@@ -4,7 +4,7 @@ import { Card, Col, Row, Divider, List, Icon, Progress, Tooltip } from 'antd';
 import axios from 'axios';
 import { EthereumIcon } from '../Web3/EthereumIcon';
 import { HomeMiddleBanner } from './HomeMiddleBanner';
-import { Vote } from '../../services/VoteService';
+// import { Vote } from '../../services/VoteService';
 
 class Home extends Component {
   constructor(props) {
@@ -16,7 +16,10 @@ class Home extends Component {
         { name: 'Expand our fishing business with the advanced fishing course', checked: false, id: 1 }
       ],
       teaching: [{ title: 'Trade in your local village 101', name: 'Ekua G', checked: false, id: 0 }],
-      certificates: ['AGR-100', 'PHI-203']
+      certificates: ['AGR-100', 'PHI-203'],
+      courseCompleted: false,
+      loansText: 'Proof of education to be submitted',
+      percentage: 50
     };
     this.handleVoteClick = this.handleVoteClick.bind(this);
     this.handleInvitationsClick = this.handleInvitationsClick.bind(this);
@@ -39,8 +42,32 @@ class Home extends Component {
         });
     }
   }
+  componentDidMount() {
+    let self = this;
+    function intervalFunc() {
+      axios
+        .get('http://35.206.132.245:8020/course_completed')
+        .then(function(response) {
+          if (response.data == true) {
+            let newCertificates = self.state.certificates;
+            newCertificates.push('PHI-301');
+            self.setState({ certificates: newCertificates, loansText: 'Completed', percentage: 100 });
+          }
+        })
+        .catch(function(error) {
+          console.log(error);
+        })
+        .then(function() {
+          // always executed
+        });
+    }
+    setInterval(intervalFunc, 1500);
+  }
+
   handleVoteClick(id) {
-    Vote(id);
+    // Vote(id);
+
+    return;
   }
   handleInvitationsClick(id) {
     let newInvitations = this.state.invitations;
@@ -160,12 +187,12 @@ class Home extends Component {
                   <Progress percent={0} />
                 </Tooltip>
                 <Divider />
-                <Tooltip title="Proof of education to be submitted">
+                <Tooltip title={this.state.loansText}>
                   <h5>Phishing</h5>
                   <span>
-                    Status: <span style={{ fontStyle: 'italic' }}>Proof of education to be submitted</span>
+                    Status: <span style={{ fontStyle: 'italic' }}>{this.state.loansText}</span>
                   </span>
-                  <Progress percent={50} />
+                  <Progress percent={this.state.percentage} />
                 </Tooltip>
               </Card>
             </Col>
