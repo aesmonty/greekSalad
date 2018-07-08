@@ -17,15 +17,22 @@ class MembersPage extends Component {
       render: text => <a href="javascript:;">{text}</a>
     },
     {
-      title: 'Age',
-      dataIndex: 'age',
-      key: 'age'
+      title: 'Location',
+      dataIndex: 'location',
+      key: 'location'
     },
     {
-      title: 'Address',
-      dataIndex: 'address',
-      key: 'address'
+      title: 'Primary Skill',
+      dataIndex: 'primarySkill',
+      key: 'primarySkill'
     },
+
+    {
+      title: 'Certificate',
+      dataIndex: 'certificate',
+      key: 'certificate'
+    },
+
     {
       title: 'Action',
       key: 'action',
@@ -40,21 +47,38 @@ class MembersPage extends Component {
   data = [
     {
       key: '1',
-      name: 'John Brown',
-      age: 32,
-      address: 'New York No. 1 Lake Park'
+      name: 'Gaona Tlahsana',
+      location: 'Rakops, Botswana',
+      primarySkill: 'cattle',
+      certificate: 'cattleCerf'
     },
     {
       key: '2',
-      name: 'Jim Green',
-      age: 42,
-      address: 'London No. 1 Lake Park'
+      name: 'Kaone Kario',
+      location: 'Zeerust, South Africa',
+      primarySkill: 'wheat',
+      certificate: 'wheatCerf'
     },
     {
       key: '3',
-      name: 'Joe Black',
-      age: 32,
-      address: 'Sidney No. 1 Lake Park'
+      name: 'Mudmai Areepatra',
+      location: 'Phitsanulok, Thailand',
+      primarySkill: 'wheat',
+      certificate: 'wheatCerf'
+    },
+    {
+      key: '4',
+      name: 'Linh Nguyen',
+      location: 'Ayun Pa, Vietnam',
+      primarySkill: 'beekeeping',
+      certificate: 'beeKeeepingCerf'
+    },
+    {
+      key: '5',
+      name: 'Itseng Kgomotso',
+      location: 'Tsootsha, Botswana',
+      primarySkill: 'cattle',
+      certificate: 'cattleCerf'
     }
   ];
 

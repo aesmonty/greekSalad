@@ -17,10 +17,10 @@ class HomePage extends Component {
           style={{ marginBottom: 0, backgroundColor: '#c6cce3' }}
         >
           <div className="text-center">
-            <h3 className="title-text text-shadow-simple">Welcome {this.props.accounts[0]}!</h3>
-          </div>
-          <div className="text-center">
-            <h2 className="dark-blue-text text-shadow-simple">Ethereum powered DAPP</h2>
+            <h3 className="title-text text-shadow-simple" style={{ marginBottom: 0 }}>
+              Welcome to your Global Village!
+            </h3>
+            <div>{this.props.accounts[0]}</div>
           </div>
         </div>
         <Home id={this.props.accounts[0]} />

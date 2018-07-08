@@ -1,0 +1,351 @@
+[
+  {
+    "payable": false,
+    "stateMutability": "view",
+    "outputs": [
+      { "type": "uint256", "name": "amount" },
+      { "type": "string", "name": "description" },
+      { "type": "string", "name": "eduCourse" },
+      { "type": "bool", "name": "eduSubmitted" },
+      { "type": "uint256", "name": "minExecutionDate" },
+      { "type": "bool", "name": "executed" },
+      { "type": "bool", "name": "proposalPassed" },
+      { "type": "uint256", "name": "numberOfVotes" },
+      { "type": "int256", "name": "currentResult" },
+      { "type": "bytes32", "name": "proposalHash" }
+    ],
+    "constant": true,
+    "type": "function",
+    "inputs": [{ "type": "uint256", "name": "" }],
+    "name": "proposals"
+  },
+  {
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "outputs": [],
+    "constant": false,
+    "type": "function",
+    "inputs": [{ "type": "address", "name": "targetMember" }],
+    "name": "removeMember"
+  },
+  {
+    "payable": false,
+    "stateMutability": "view",
+    "outputs": [{ "type": "string", "name": "" }],
+    "constant": true,
+    "type": "function",
+    "inputs": [{ "type": "uint256", "name": "proposalID" }],
+    "name": "getProposalDescription"
+  },
+  {
+    "payable": false,
+    "stateMutability": "view",
+    "outputs": [{ "type": "bool", "name": "codeChecksOut" }],
+    "constant": true,
+    "type": "function",
+    "inputs": [
+      { "type": "uint256", "name": "proposalNumber" },
+      { "type": "address[]", "name": "beneficiaries" },
+      { "type": "uint256", "name": "weiAmount" }
+    ],
+    "name": "checkProposalCode"
+  },
+  {
+    "payable": false,
+    "stateMutability": "view",
+    "outputs": [{ "type": "uint256", "name": "" }],
+    "constant": true,
+    "type": "function",
+    "inputs": [{ "type": "address", "name": "" }],
+    "name": "memberId"
+  },
+  {
+    "payable": false,
+    "stateMutability": "view",
+    "outputs": [{ "type": "uint256", "name": "" }],
+    "constant": true,
+    "type": "function",
+    "inputs": [],
+    "name": "numProposals"
+  },
+  {
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "outputs": [{ "type": "uint256", "name": "proposalID" }],
+    "constant": false,
+    "type": "function",
+    "inputs": [
+      { "type": "address[3]", "name": "beneficiaries" },
+      { "type": "uint256", "name": "weiAmount" },
+      { "type": "string", "name": "jobDescription" },
+      { "type": "string", "name": "educourse" },
+      { "type": "uint256[3]", "name": "amountPerPerson" }
+    ],
+    "name": "newProposal"
+  },
+  {
+    "payable": false,
+    "stateMutability": "view",
+    "outputs": [{ "type": "uint256", "name": "" }],
+    "constant": true,
+    "type": "function",
+    "inputs": [{ "type": "uint256", "name": "proposalID" }],
+    "name": "getProposalVotes"
+  },
+  {
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "outputs": [],
+    "constant": false,
+    "type": "function",
+    "inputs": [{ "type": "uint256", "name": "proposalNumber" }],
+    "name": "execute_2nd_installment"
+  },
+  {
+    "payable": false,
+    "stateMutability": "view",
+    "outputs": [
+      { "type": "address", "name": "member" },
+      { "type": "string", "name": "name" },
+      { "type": "uint256", "name": "memberSince" },
+      { "type": "uint256", "name": "qiAmount" }
+    ],
+    "constant": true,
+    "type": "function",
+    "inputs": [{ "type": "uint256", "name": "" }],
+    "name": "members"
+  },
+  {
+    "payable": false,
+    "stateMutability": "view",
+    "outputs": [{ "type": "uint256", "name": "" }],
+    "constant": true,
+    "type": "function",
+    "inputs": [{ "type": "uint256", "name": "proposalID" }],
+    "name": "getProposalFunding"
+  },
+  {
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "outputs": [],
+    "constant": false,
+    "type": "function",
+    "inputs": [
+      { "type": "address", "name": "targetMember" },
+      { "type": "string", "name": "memberName" },
+      { "type": "bytes32", "name": "nameValidHash" }
+    ],
+    "name": "addMember"
+  },
+  {
+    "payable": false,
+    "stateMutability": "view",
+    "outputs": [{ "type": "uint256", "name": "" }],
+    "constant": true,
+    "type": "function",
+    "inputs": [],
+    "name": "debatingPeriodInMinutes"
+  },
+  {
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "outputs": [],
+    "constant": false,
+    "type": "function",
+    "inputs": [{ "type": "uint256", "name": "proposalNumber" }],
+    "name": "execute_1st_installment"
+  },
+  {
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "outputs": [],
+    "constant": false,
+    "type": "function",
+    "inputs": [{ "type": "uint256", "name": "proposalID" }],
+    "name": "joinProposal"
+  },
+  {
+    "payable": false,
+    "stateMutability": "view",
+    "outputs": [{ "type": "string", "name": "" }],
+    "constant": true,
+    "type": "function",
+    "inputs": [{ "type": "uint256", "name": "proposalID" }],
+    "name": "getProposalEduRequirements"
+  },
+  {
+    "payable": false,
+    "stateMutability": "view",
+    "outputs": [{ "type": "uint256", "name": "" }],
+    "constant": true,
+    "type": "function",
+    "inputs": [],
+    "name": "minimumQuorum"
+  },
+  {
+    "payable": false,
+    "stateMutability": "view",
+    "outputs": [{ "type": "address", "name": "" }],
+    "constant": true,
+    "type": "function",
+    "inputs": [],
+    "name": "owner"
+  },
+  {
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "outputs": [],
+    "constant": false,
+    "type": "function",
+    "inputs": [
+      { "type": "address", "name": "_from" },
+      { "type": "uint256", "name": "_value" },
+      { "type": "address", "name": "_token" },
+      { "type": "bytes", "name": "_extraData" }
+    ],
+    "name": "receiveApproval"
+  },
+  {
+    "payable": false,
+    "stateMutability": "view",
+    "outputs": [{ "type": "int256", "name": "" }],
+    "constant": true,
+    "type": "function",
+    "inputs": [],
+    "name": "majorityMargin"
+  },
+  {
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "outputs": [],
+    "constant": false,
+    "type": "function",
+    "inputs": [{ "type": "string", "name": "educourse" }, { "type": "uint256", "name": "proposalID" }],
+    "name": "submitEducationProof"
+  },
+  {
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "outputs": [{ "type": "uint256", "name": "voteID" }],
+    "constant": false,
+    "type": "function",
+    "inputs": [
+      { "type": "uint256", "name": "proposalNumber" },
+      { "type": "bool", "name": "supportsProposal" },
+      { "type": "string", "name": "justificationText" }
+    ],
+    "name": "vote"
+  },
+  {
+    "payable": false,
+    "stateMutability": "view",
+    "outputs": [{ "type": "uint256", "name": "" }],
+    "constant": true,
+    "type": "function",
+    "inputs": [],
+    "name": "getDaoBalance"
+  },
+  {
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "outputs": [],
+    "constant": false,
+    "type": "function",
+    "inputs": [{ "type": "address", "name": "newOwner" }],
+    "name": "transferOwnership"
+  },
+  {
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "constructor",
+    "inputs": [
+      { "type": "uint256", "name": "minimumQuorumForProposals" },
+      { "type": "uint256", "name": "minutesForDebate" },
+      { "type": "int256", "name": "marginOfVotesForMajority" }
+    ]
+  },
+  { "payable": true, "stateMutability": "payable", "type": "fallback" },
+  {
+    "name": "ProposalAdded",
+    "type": "event",
+    "inputs": [
+      { "indexed": false, "type": "uint256", "name": "proposalID" },
+      { "indexed": false, "type": "address", "name": "recipient" },
+      { "indexed": false, "type": "uint256", "name": "amount" },
+      { "indexed": false, "type": "string", "name": "description" }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "Voted",
+    "type": "event",
+    "inputs": [
+      { "indexed": false, "type": "uint256", "name": "proposalID" },
+      { "indexed": false, "type": "bool", "name": "position" },
+      { "indexed": false, "type": "address", "name": "voter" },
+      { "indexed": false, "type": "string", "name": "justification" }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "ProposalPassed",
+    "type": "event",
+    "inputs": [
+      { "indexed": false, "type": "uint256", "name": "proposalID" },
+      { "indexed": false, "type": "int256", "name": "result" },
+      { "indexed": false, "type": "uint256", "name": "quorum" },
+      { "indexed": false, "type": "bool", "name": "active" }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "ProposalExecuted",
+    "type": "event",
+    "inputs": [
+      { "indexed": false, "type": "uint256", "name": "proposalID" },
+      { "indexed": false, "type": "int256", "name": "result" },
+      { "indexed": false, "type": "uint256", "name": "quorum" },
+      { "indexed": false, "type": "bool", "name": "active" }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "MembershipChanged",
+    "type": "event",
+    "inputs": [
+      { "indexed": false, "type": "address", "name": "member" },
+      { "indexed": false, "type": "bool", "name": "isMember" }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "ChangeOfRules",
+    "type": "event",
+    "inputs": [
+      { "indexed": false, "type": "uint256", "name": "newMinimumQuorum" },
+      { "indexed": false, "type": "uint256", "name": "newDebatingPeriodInMinutes" },
+      { "indexed": false, "type": "int256", "name": "newMajorityMargin" }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "receivedEther",
+    "type": "event",
+    "inputs": [
+      { "indexed": false, "type": "address", "name": "sender" },
+      { "indexed": false, "type": "uint256", "name": "amount" }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "receivedTokens",
+    "type": "event",
+    "inputs": [
+      { "indexed": false, "type": "address", "name": "_from" },
+      { "indexed": false, "type": "uint256", "name": "_value" },
+      { "indexed": false, "type": "address", "name": "_token" },
+      { "indexed": false, "type": "bytes", "name": "_extraData" }
+    ],
+    "anonymous": false
+  }
+]
