@@ -17,7 +17,7 @@ class HomePage extends Component {
           style={{ marginBottom: 0, backgroundColor: '#c6cce3' }}
         >
           <div className="text-center">
-            <h1 className="title-text text-shadow-simple">Welcome {this.props.accounts[0]}!!!!!</h1>
+            <h3 className="title-text text-shadow-simple">Welcome {this.props.accounts[0]}!</h3>
           </div>
           <div className="text-center">
             <h2 className="dark-blue-text text-shadow-simple">Ethereum powered DAPP</h2>
