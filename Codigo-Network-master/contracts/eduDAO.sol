@@ -68,6 +68,12 @@ contract eduDAO is owned, tokenRecipient {
     function getProposalFunding(uint proposalID) public view returns (uint){
         return proposals[proposalID].amount;
     }
+<<<<<<< HEAD
+=======
+    
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //EVENTS
+>>>>>>> 94f8986d96e80609b02a67cf924d281f5b139a92
 
     event ProposalAdded(uint proposalID, address recipient, uint amount, string description);
     event Voted(uint proposalID, bool position, address voter, string justification);
@@ -213,8 +219,7 @@ contract eduDAO is owned, tokenRecipient {
         }
 
         require(calc == weiAmount);
-
-
+        
         proposalID = proposals.length++;
         Proposal storage p = proposals[proposalID];
         p.recipients = beneficiaries;

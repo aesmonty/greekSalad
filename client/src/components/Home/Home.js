@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Card, Col, Row, Divider, List, Icon } from 'antd';
+import { Card, Col, Row, Divider, List, Icon, Progress, Tooltip } from 'antd';
 import axios from 'axios';
 import { EthereumIcon } from '../Web3/EthereumIcon';
 import { HomeMiddleBanner } from './HomeMiddleBanner';
+import { Vote } from '../../services/VoteService';
 
 class Home extends Component {
   constructor(props) {
@@ -14,6 +15,7 @@ class Home extends Component {
         { name: 'learn AGR-101 and start a wheat farm', checked: false, id: 0 },
         { name: 'Expand our fishing business with the advanced fishing course', checked: false, id: 1 }
       ],
+      teaching: [{ title: 'Trade in your local village 101', name: 'Ekua G', checked: false, id: 0 }],
       certificates: ['AGR-100', 'PHI-203']
     };
     this.handleVoteClick = this.handleVoteClick.bind(this);
@@ -38,12 +40,17 @@ class Home extends Component {
     }
   }
   handleVoteClick(id) {
-    console.log(`use web3 with the id of ${id} and setState accordingly`);
+    Vote(id);
   }
   handleInvitationsClick(id) {
     let newInvitations = this.state.invitations;
     newInvitations[id].checked = true;
     this.setState({ invitations: newInvitations });
+  }
+  handleTeachingClick(id) {
+    let newTeaching = this.state.teaching;
+    newTeaching[id].checked = true;
+    this.setState({ teaching: newTeaching });
   }
   render() {
     return (
@@ -119,13 +126,49 @@ class Home extends Component {
                   )}
                 />
               </Card>
+              <Card title="Teaching requests" bordered={false}>
+                <List
+                  itemLayout="horizontal"
+                  dataSource={this.state.teaching}
+                  renderItem={item => (
+                    <List.Item>
+                      <List.Item.Meta
+                        title={<a>{item.title}</a>}
+                        description={
+                          <div>
+                            <span style={{ width: '500px', float: 'left' }}>{item.name}</span>
+                            <span style={{ marginRight: 10, float: 'right' }}>
+                              <Icon style={{ color: '#586aad' }} type="message" />
+                              <Icon style={{ color: '#586aad', marginLeft: 10 }} type="phone" />
+                            </span>
+                          </div>
+                        }
+                      />
+                    </List.Item>
+                  )}
+                />
+              </Card>
             </Col>
           </Row>
           <Divider />
           <Row gutter={16}>
             <Col span={12}>
               <Card title="Your loans" bordered={false}>
-                Card content
+                <Tooltip title="Proposal under evaluation">
+                  <h5>Bee keeping - Botswana</h5>
+                  <span>
+                    Status: <span style={{ fontStyle: 'italic' }}>Proposal under evaluation</span>
+                  </span>
+                  <Progress percent={0} />
+                </Tooltip>
+                <Divider />
+                <Tooltip title="Proof of education to be submitted">
+                  <h5>Phishing</h5>
+                  <span>
+                    Status: <span style={{ fontStyle: 'italic' }}>Proof of education to be submitted</span>
+                  </span>
+                  <Progress percent={50} />
+                </Tooltip>
               </Card>
             </Col>
             <Col span={12}>
