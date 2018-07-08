@@ -76,10 +76,6 @@ contract eduDAO is owned, tokenRecipient {
         return proposals[proposalID].amount;
     }
     
-
-
-
-
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     //EVENTS
 
@@ -230,8 +226,7 @@ contract eduDAO is owned, tokenRecipient {
         }
 
         require(calc == weiAmount);
-
-
+        
         proposalID = proposals.length++;
         Proposal storage p = proposals[proposalID];
         p.recipients = beneficiaries;
