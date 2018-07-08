@@ -73,7 +73,7 @@ class Home extends Component {
         reject('No web3!');
       }
 
-      const appContract = web3.eth.contract(appContractAbi).at('0x6bbE90c1b32857590Df28E5645fe7B5A9c31c050');
+      const appContract = web3.eth.contract(appContractAbi).at('0x166f031F1DFA7fc9dcDe6fc7a8A379B33E63eE31');
       const account = web3.eth.accounts[0];
       if (!account) {
         reject('No account!');
@@ -209,9 +209,13 @@ class Home extends Component {
                 </Tooltip>
                 <Divider />
                 <Tooltip title={this.state.loansText}>
-                  <h5>Phishing</h5>
+                  <h5>Fishing</h5>
                   <span>
-                    Status: <span style={{ fontStyle: 'italic' }}>{this.state.loansText}</span>
+                    Status:{' '}
+                    <span style={{ fontStyle: 'italic' }}>
+                      {this.state.loansText}{' '}
+                      {this.state.loansText === 'Completed' ? <span style={{ fontSize: '18px' }}>400 Qi</span> : ''}
+                    </span>
                   </span>
                   <Progress percent={this.state.percentage} />
                 </Tooltip>
