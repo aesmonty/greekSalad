@@ -127,12 +127,18 @@ class Home extends Component {
             <Col span={12}>
               <Card title="Your loans" bordered={false}>
                 <Tooltip title="Proposal under evaluation">
-                  <span>Bee keeping - Botswana</span>
+                  <h5>Bee keeping - Botswana</h5>
+                  <span>
+                    Status: <span style={{ fontStyle: 'italic' }}>Proposal under evaluation</span>
+                  </span>
                   <Progress percent={0} />
                 </Tooltip>
                 <Divider />
                 <Tooltip title="Proof of education to be submitted">
-                  <span>Phishing</span>
+                  <h5>Phishing</h5>
+                  <span>
+                    Status: <span style={{ fontStyle: 'italic' }}>Proof of education to be submitted</span>
+                  </span>
                   <Progress percent={50} />
                 </Tooltip>
               </Card>
