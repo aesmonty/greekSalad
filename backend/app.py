@@ -20,7 +20,7 @@ def get_proposals():
     global ba
     cc = Compact_Contract('abi.json', 'eduDAO', ba.getWeb3(), '0x6bbE90c1b32857590Df28E5645fe7B5A9c31c050')
     for proposal in proposals:
-        val = cc.get_def_instance().getProposalVotes(proposal['id'])
+        val = cc.get_consice_instance().getProposalVotes(proposal['id'])
         print(val)
         proposal['voted'] = (val != 0)
     return jsonify(proposals)
