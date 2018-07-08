@@ -26,6 +26,13 @@ class MembersPage extends Component {
       dataIndex: 'primarySkill',
       key: 'primarySkill'
     },
+
+    {
+      title: 'Certificate',
+      dataIndex: 'certificate',
+      key: 'certificate'
+    },
+
     {
       title: 'Action',
       key: 'action',
@@ -42,31 +49,36 @@ class MembersPage extends Component {
       key: '1',
       name: 'Gaona Tlahsana',
       location: 'Rakops, Botswana',
-      primarySkill: 'cattle'
+      primarySkill: 'cattle',
+      certificate: 'cattleCerf'
     },
     {
       key: '2',
       name: 'Kaone Kario',
       location: 'Zeerust, South Africa',
-      primarySkill: 'wheat'
+      primarySkill: 'wheat',
+      certificate: 'wheatCerf'
     },
     {
       key: '3',
       name: 'Mudmai Areepatra',
       location: 'Phitsanulok, Thailand',
-      primarySkill: 'wheat'
+      primarySkill: 'wheat',
+      certificate: 'wheatCerf'
     },
     {
       key: '4',
       name: 'Linh Nguyen',
       location: 'Ayun Pa, Vietnam',
-      primarySkill: 'beekeeping'
+      primarySkill: 'beekeeping',
+      certificate: 'beeKeeepingCerf'
     },
     {
       key: '5',
       name: 'Itseng Kgomotso',
       location: 'Tsootsha, Botswana',
-      primarySkill: 'cattle'
+      primarySkill: 'cattle',
+      certificate: 'cattleCerf'
     }
   ];
 
