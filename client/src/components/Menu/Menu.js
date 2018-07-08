@@ -6,14 +6,11 @@ const Menu = () => (
     <a id="home" className="menu-item menu-link" href="/">
       Home
     </a>
-    <a id="pools" className="menu-item menu-link" href="/pools">
-      Pool Explorer
+    <a id="members" className="menu-item menu-link" href="/members">
+      Members
     </a>
-    <a id="my-pools" className="menu-item menu-link" href="/mypools">
-      My Pools
-    </a>
-    <a id="create-pool" className="menu-item menu-link" href="/create">
-      Create Pool
+    <a id="create-pool" className="menu-item menu-link" href="/new-proposal">
+      New proposal
     </a>
   </ReduxMenu>
 );
