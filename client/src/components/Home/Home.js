@@ -57,9 +57,7 @@ class Home extends Component {
       <div style={{ background: '#ECECEC', padding: '30px' }}>
         <div>
           <p className="text-center" style={{ fontSize: 20 }}>
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-            industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and
-            scrambled it to make a type specimen book.
+            Link with other women to share knowledge and advice. Petition for loans to grow your business.
           </p>
         </div>
         <HomeMiddleBanner />
