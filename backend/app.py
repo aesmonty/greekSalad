@@ -18,7 +18,7 @@ def hello_world():
 @app.route('/proposals')
 def get_proposals():
     global ba
-    cc = Compact_Contract('abi.json', 'eduDAO', ba.getWeb3(), '0x6bbE90c1b32857590Df28E5645fe7B5A9c31c050')
+    cc = Compact_Contract('abi.json', 'eduDAO', ba.getWeb3(), '0x166f031F1DFA7fc9dcDe6fc7a8A379B33E63eE31')
     for proposal in proposals:
         val = cc.get_consice_instance().getProposalVotes(proposal['id'])
         print(val)
